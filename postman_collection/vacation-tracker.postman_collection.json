@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "941e0f71-a942-4dfa-b04e-1618a01ca52a",
+		"name": "vacation-tracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createEmployee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"example@gmail.com\",\n    \"password\": \"pass123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/create-employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"create-employee"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
