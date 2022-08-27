@@ -18,6 +18,8 @@ public class VacationEntity {
     private Long id;
     private Integer year;
     private Integer days;
+    private Integer usedDays;
+    private Integer freeDays;
 
    @ManyToOne
    private EmployeeEntity employee;
