@@ -12,10 +12,15 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"example@gmail.com\",\n    \"password\": \"pass123\"\n}"
+					"raw": "{\n    \"email\": \"vukpejic4@gmail.com\",\n    \"password\": \"vuk123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/create-employee",
+					"raw": "http://localhost:8080/api/v1/employee/create-employee",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -24,7 +29,62 @@
 					"path": [
 						"api",
 						"v1",
+						"employee",
 						"create-employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addVacationDays",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user1@rbt.rs\",\n    \"days\": 20\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/2022/add-vacation-days",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"2022",
+						"add-vacation-days"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addVacationDaysFromCSV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/vacations_2021.csv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"vacations_2021.csv"
 					]
 				}
 			},

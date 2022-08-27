@@ -1,9 +1,9 @@
-package com.rbt.vacationtracker.repository;
+package com.rbt.vacationtracker.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
-
+import java.util.List;
 
 @Builder
 @Getter
@@ -18,4 +18,7 @@ public class EmployeeEntity {
     private Long id;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
+    private List<VacationEntity> vacations;
 }
