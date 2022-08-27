@@ -38,7 +38,7 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{filename}")
+    @PostMapping("/days-per-year/{filename}")
     public ResponseEntity<?> addVacationDaysFromCSVFile(@PathVariable String filename) {
         String path = PATH_PREFIX + filename;
         URI uri = URI.create(
@@ -47,6 +47,17 @@ public class EmployeeController {
                         .path("api/v1/employee/vacations_{year}.csv")
                         .toUriString());
         employeeLoader.loadEmployeesVacationDays(path);
+        return ResponseEntity.created(uri).build();
+    }
+    @PostMapping("/spent-days-per-year/{filename}")
+    public ResponseEntity<?> addSpentVacationDaysFromCSVFile(@PathVariable String filename) {
+        String path = PATH_PREFIX + filename;
+        URI uri = URI.create(
+                ServletUriComponentsBuilder
+                        .fromCurrentContextPath()
+                        .path("api/v1/employee/vacations_{year}.csv")
+                        .toUriString());
+        employeeLoader.spentVacationDaysCSV(path);
         return ResponseEntity.created(uri).build();
     }
 }
