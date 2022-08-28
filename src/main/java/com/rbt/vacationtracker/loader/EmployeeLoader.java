@@ -30,6 +30,9 @@ public class EmployeeLoader {
     @Value("${data.location}")
     private String path;
 
+    /*
+    This function loads all employees from a given csv file into the database.
+     */
 //    @PostConstruct
     public void loadEmployees() {
         try (Scanner sc = new Scanner(new File(path))) {
@@ -44,6 +47,9 @@ public class EmployeeLoader {
         }
     }
 
+    /*
+    This function loads all vacation days per employee per year from a given csv file.
+     */
     public void loadEmployeesVacationDays (String path) {
         try (Scanner sc = new Scanner(new File(path))) {
             String line = sc.nextLine();
@@ -57,7 +63,10 @@ public class EmployeeLoader {
             log.error(e.getMessage(), e);
         }
     }
-
+    /*
+        This is a help function that is used in loadEmployeesVacationDays function.
+        It processes the given csv file and returns EmployeeVacation.
+         */
     private EmployeeVacation generateEmployeeVacation(String line) {
         if (line != null) {
             fields = line.split(",");
@@ -69,7 +78,10 @@ public class EmployeeLoader {
                 .days(Integer.parseInt(fields[1]))
                 .build();
     }
-
+    /*
+            This is a help function that is used in loadEmployees function.
+            It processes the given csv file and returns EmployeeEntity.
+             */
     private EmployeeEntity generateEmployee(final String line) {
         if (line != null) {
             fields = line.split(",");
@@ -81,7 +93,9 @@ public class EmployeeLoader {
                 .password(fields[1])
                 .build();
     }
-
+    /*
+    * This function is sets used vacation days per year per employee from a given csv file.
+    * */
     public void spentVacationDaysCSV(String path) {
         try (Scanner sc = new Scanner(new File(path))) {
             sc.nextLine();
@@ -93,7 +107,10 @@ public class EmployeeLoader {
             log.error(e.getMessage(), e);
         }
     }
-
+    /*
+            This is a help function that is used in spentVacationDaysCSV function.
+            It processes the given csv file and return EmployeeVacationDaysSpent.
+             */
     private EmployeeVacationDaysSpent generateDateDifference(String line) throws ParseException {
         if (line != null) {
             fields = line.split(",");

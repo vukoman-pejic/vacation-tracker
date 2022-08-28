@@ -24,7 +24,9 @@ import java.util.concurrent.TimeUnit;
 public class EmployeeService {
    private final EmployeeRepository employeeRepository;
    private final VacationRepository vacationRepository;
-
+    /*
+    This function is creating a new employee and inserting it in database
+     */
    public void createEmployee(Employee employee) {
         EmployeeEntity employeeEntity = EmployeeEntity.builder()
                 .email(employee.getEmail())
@@ -34,6 +36,9 @@ public class EmployeeService {
         employeeRepository.save(employeeEntity);
         log.info("Employee: {} saved in database", employee.getEmail());
     }
+    /*
+    This function is adding a vacation days for a given year for employee
+     */
     public void addVacationDays(Integer year, EmployeeVacation employeeVacation) {
        EmployeeEntity employeeEntity = employeeRepository.findByEmail(employeeVacation.getEmail())
                .orElseThrow(() -> new NoSuchElementException());
@@ -49,7 +54,9 @@ public class EmployeeService {
         employeeEntity.getVacations().add(vacationEntity);
         log.info("Added {} days for user {}", employeeVacation.getDays(), employeeVacation.getEmail());
     }
-
+    /*
+        This function is setting a number of used vacation days as well as free days per year.
+         */
     public void usedVacationDaysManagement(EmployeeVacationDaysSpent employeeVacationDaysSpent) {
         EmployeeEntity employeeEntity = employeeRepository.findByEmail(employeeVacationDaysSpent.getEmail())
                 .orElseThrow(() -> new NoSuchElementException());
@@ -61,11 +68,14 @@ public class EmployeeService {
         Long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
         assert vacationEntity != null;
-        vacationEntity.setFreeDays(vacationEntity.getDays() - diff.intValue());
+        vacationEntity.setFreeDays(vacationEntity.getFreeDays() - diff.intValue());
         vacationEntity.setUsedDays(vacationEntity.getUsedDays() + diff.intValue());
         vacationRepository.save(vacationEntity);
     }
-
+    /*
+        This is a help function that is used in usedVacationDaysManagement function.
+        It returns you a VacationEntity for a given year.
+         */
     private VacationEntity getVacationWithGivenYear(Integer year, List<VacationEntity> vacationEntities) {
        for (VacationEntity v: vacationEntities) {
            if (Objects.equals(v.getYear(), year)) {
@@ -74,5 +84,4 @@ public class EmployeeService {
        }
        return null;
     }
-
 }
