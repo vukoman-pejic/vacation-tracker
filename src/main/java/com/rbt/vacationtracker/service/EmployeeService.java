@@ -5,6 +5,7 @@ import com.rbt.vacationtracker.entity.EmployeeVacationDaysSpent;
 import com.rbt.vacationtracker.entity.VacationEntity;
 import com.rbt.vacationtracker.model.Employee;
 import com.rbt.vacationtracker.model.EmployeeVacation;
+import com.rbt.vacationtracker.model.Role;
 import com.rbt.vacationtracker.repository.EmployeeRepository;
 import com.rbt.vacationtracker.repository.VacationRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -24,6 +27,11 @@ import java.util.concurrent.TimeUnit;
 public class EmployeeService {
    private final EmployeeRepository employeeRepository;
    private final VacationRepository vacationRepository;
+    public EmployeeEntity findJwtUserByEmail(String email) {
+        return employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found."));
+    }
+
     /*
     This function is creating a new employee and inserting it in database
      */
@@ -31,6 +39,7 @@ public class EmployeeService {
         EmployeeEntity employeeEntity = EmployeeEntity.builder()
                 .email(employee.getEmail())
                 .password(employee.getPassword())
+                .role(Set.of(Role.ROLE_USER))
                 .build();
 
         employeeRepository.save(employeeEntity);

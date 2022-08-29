@@ -3,6 +3,7 @@ package com.rbt.vacationtracker.loader;
 import com.rbt.vacationtracker.entity.EmployeeEntity;
 import com.rbt.vacationtracker.entity.EmployeeVacationDaysSpent;
 import com.rbt.vacationtracker.model.EmployeeVacation;
+import com.rbt.vacationtracker.model.Role;
 import com.rbt.vacationtracker.repository.EmployeeRepository;
 import com.rbt.vacationtracker.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -91,6 +93,7 @@ public class EmployeeLoader {
         return EmployeeEntity.builder()
                 .email(fields[0])
                 .password(fields[1])
+                .role(Set.of(Role.ROLE_USER))
                 .build();
     }
     /*

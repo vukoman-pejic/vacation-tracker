@@ -13,16 +13,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api/v1/employee")
+@RequestMapping("api/v1/employee/admin")
 @RequiredArgsConstructor
 public class EmployeeController {
     private static final String PATH_PREFIX = "src/main/resources/samples/";
     private final EmployeeService employeeService;
     private final EmployeeLoader employeeLoader;
 
-    /*
-
-     */
     @PostMapping("/create-employee")
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         URI uri = URI.create(
