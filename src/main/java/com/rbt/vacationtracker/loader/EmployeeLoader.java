@@ -9,6 +9,7 @@ import com.rbt.vacationtracker.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -29,13 +30,15 @@ public class EmployeeLoader {
     private final EmployeeService employeeService;
     private String[] fields;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Value("${data.location}")
     private String path;
 
     /*
     This function loads all employees from a given csv file into the database.
      */
-//    @PostConstruct
+    @PostConstruct
     public void loadEmployees() {
         try (Scanner sc = new Scanner(new File(path))) {
             sc.nextLine();
@@ -92,7 +95,7 @@ public class EmployeeLoader {
         }
         return EmployeeEntity.builder()
                 .email(fields[0])
-                .password(fields[1])
+                .password(passwordEncoder.encode(fields[1]))
                 .role(Set.of(Role.ROLE_USER))
                 .build();
     }
