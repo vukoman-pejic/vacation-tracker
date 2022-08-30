@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +35,8 @@ public class EmployeeLoader {
     private String path;
 
     /*
-    This function loads all employees from a given csv file into the database.
-     */
+    * This function loads all employees from a given csv file into the database.
+    */
     @PostConstruct
     public void loadEmployees() {
         try (Scanner sc = new Scanner(new File(path))) {
