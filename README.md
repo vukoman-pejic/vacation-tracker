@@ -13,8 +13,5 @@ Then in order to test the project to be working properly, open Postman, and in a
 
 Tests for this project are not written but you are very welcome to write them.
 
-<<<<<<< HEAD
 That would be all.
-=======
-That would be all.
->>>>>>> 5e10ebf5e3add3496c3ad22709ae69702d8e22c8
+
