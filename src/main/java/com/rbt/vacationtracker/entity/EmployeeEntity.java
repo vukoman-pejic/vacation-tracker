@@ -44,6 +44,10 @@ public class EmployeeEntity implements UserDetails {
         return authorities;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "department_id")
+    private DepartmentEntity department;
+
     @Override
     public String getUsername() {
         return this.email;

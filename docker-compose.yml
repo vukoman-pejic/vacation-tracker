@@ -11,7 +11,7 @@ services:
   searchapp:
     container_name: data-search-container
     image: data-search-image
-    build: /Users/vukpejic/Desktop/rbt/data-search
+    build: ../data-search
     ports:
       - "8081:8081"
     depends_on:

@@ -1,9 +1,11 @@
 package com.rbt.vacationtracker.loader;
 
+import com.rbt.vacationtracker.entity.DepartmentEntity;
 import com.rbt.vacationtracker.entity.EmployeeEntity;
 import com.rbt.vacationtracker.entity.EmployeeVacationDaysSpent;
 import com.rbt.vacationtracker.model.EmployeeVacation;
 import com.rbt.vacationtracker.model.Role;
+import com.rbt.vacationtracker.repository.DepartmentRepository;
 import com.rbt.vacationtracker.repository.EmployeeRepository;
 import com.rbt.vacationtracker.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import java.util.Set;
 @Slf4j
 public class EmployeeLoader {
     private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
     private final EmployeeService employeeService;
     private String[] fields;
 
@@ -40,14 +43,28 @@ public class EmployeeLoader {
     @PostConstruct
     public void loadEmployees() {
         try (Scanner sc = new Scanner(new File(path))) {
+//            sc.nextLine();
             sc.nextLine();
-            sc.nextLine();
+
             while (sc.hasNextLine()) {
-                EmployeeEntity employeeEntity = generateEmployee(sc.nextLine());
+                String line = sc.nextLine().trim();
+                if (line.isEmpty()) continue;
+
+                EmployeeEntity employeeEntity = generateEmployee(line);
+                if (employeeEntity == null) continue;
+
+                boolean exists = employeeRepository.existsByEmail(employeeEntity.getEmail());
+                if (exists) {
+                    log.info("Skipping existing employee: {}", employeeEntity.getEmail());
+                    continue;
+                }
+
                 employeeRepository.save(employeeEntity);
+                log.info("Added new employee: {}", employeeEntity.getEmail());
             }
+
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("Error while loading employees", e);
         }
     }
 
@@ -92,12 +109,31 @@ public class EmployeeLoader {
         } else {
             return null;
         }
+
+        String email = fields[0].trim();
+        String password = fields[1].trim();
+        String departmentName = fields.length > 2 ? fields[2].trim() : null;
+
+        DepartmentEntity department = null;
+        if (departmentName != null && !departmentName.isEmpty()) {
+            department = departmentRepository
+                    .findByName(departmentName)
+                    .orElseGet(() -> {
+                        DepartmentEntity newDept = DepartmentEntity.builder()
+                                .name(departmentName)
+                                .build();
+                        return departmentRepository.save(newDept);
+                    });
+        }
+
         return EmployeeEntity.builder()
-                .email(fields[0])
-                .password(passwordEncoder.encode(fields[1]))
+                .email(email)
+                .password(passwordEncoder.encode(password))
                 .role(Set.of(Role.ROLE_USER))
+                .department(department)
                 .build();
     }
+
     /*
     * This function is sets used vacation days per year per employee from a given csv file.
     * */
