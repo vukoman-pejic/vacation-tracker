@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -80,9 +77,10 @@ public class EmployeeService {
                     " for employee " + employeeVacationDaysSpent.getEmail());
         }
 
-        // Calculate days requested
-        long diffInMillies = Math.abs(employeeVacationDaysSpent.getEndDate().getTime() - employeeVacationDaysSpent.getStartDate().getTime());
-        int daysRequested = (int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1; // +1 for inclusive
+        int daysRequested = calculateWorkingDays(
+                employeeVacationDaysSpent.getStartDate(),
+                employeeVacationDaysSpent.getEndDate()
+        );
 
         // Check if enough free days exist
         if (vacationEntity.getFreeDays() < daysRequested) {
@@ -103,6 +101,22 @@ public class EmployeeService {
                 daysRequested, vacationEntity.getFreeDays());
     }
 
+    private int calculateWorkingDays(Date startDate, Date endDate) {
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
+
+        int workingDays = 0;
+        while (!start.after(end)) {
+            int dayOfWeek = start.get(Calendar.DAY_OF_WEEK);
+            if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
+                workingDays++;
+            }
+            start.add(Calendar.DATE, 1);
+        }
+        return workingDays;
+    }
     /*
         This is a help function that is used in usedVacationDaysManagement function.
         It returns you a VacationEntity for a given year.
