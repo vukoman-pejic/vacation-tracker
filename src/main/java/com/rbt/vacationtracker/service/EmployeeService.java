@@ -51,7 +51,7 @@ public class EmployeeService {
      */
     public void addVacationDays(Integer year, EmployeeVacation employeeVacation) {
        EmployeeEntity employeeEntity = employeeRepository.findByEmail(employeeVacation.getEmail())
-               .orElseThrow(() -> new NoSuchElementException());
+               .orElseThrow(NoSuchElementException::new);
 
         VacationEntity vacationEntity = VacationEntity.builder()
                         .days(employeeVacation.getDays())
